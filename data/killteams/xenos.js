@@ -36,4 +36,42 @@ window.KILLTEAM_DATA = [
       ],
     },
   },
+  {
+    id: 'yaegirs',
+    name: 'Hernkyn Yaegirs',
+    tagline: 'For rock and stone!',
+    updated: '14-11-2025',
+    weapons: {
+      Equipment: ['Add Blast 1" to Range 6" Shotguns'],
+      'Individual Operatives': [
+        'Tracker has silent, within 6" gains seek light and cant be obscured.',
+        'Riflekyn has silent shot for its first shot',
+        'Bladekyn has silent (limit 1) for its weapon',
+        'Venomspitter has blast 2"',
+      ],
+    },
+    impactsYou: {
+      'Faction Rules / Equipment / Ploys': [
+        { text: 'Strategy Ploy: All ops half your first damage.', important: true },
+        'Firefight Ploy: When shooting at them, crits do normal damage.',
+        { text: 'Strategy Ploy: Super Conceal.', important: true },
+      ],
+      'Individual Operatives': ['Theyn ignores 1st death and stays alive that with 1w.'],
+    },
+    // Example impacts as subcategories. Keys become subsection titles.
+    impactsThem: {
+      'Faction Rules / Equipment / Ploys': [
+        'Rule: Resourceful points for ops to gain 1AP or heal D3+1.',
+        'Rule: Before TP1 all ops can reposition.',
+        'Firefight Ploy: Group activate up to 2 ops within 3".',
+        'Firefight Ploy: WHen you charge them, someone else can interrupt within 6" to shoot you.',
+      ],
+      'Individual Operatives': [
+        { text: 'Bladekyn can charge from conceal. Fights on death', important: true },
+        'Ironrbraek lays 5 mines, 2 are fake. They do 3-6 dmg and ends your action, he can re-arm them.',
+        'Bombast has a strat gambit where it can flip its order and shoot you, he can also reduce your APLT within 2" after killing an op.',
+        'Warrior can use resourceful points to heal 4 or gain 1AP.',
+      ],
+    },
+  },
 ];
