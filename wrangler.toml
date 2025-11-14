@@ -1,3 +1,5 @@
 # wrangler.toml
 name = 'kt-kye'
 
+compatibility_date = "2025-11-14"
+main = "index.html"
