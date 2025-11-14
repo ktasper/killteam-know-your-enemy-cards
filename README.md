@@ -1,11 +1,10 @@
 # Kill Team — Know Your Enemy Cards
 
-A small static web tool to create printable "tactical" cards for Warhammer Kill Team kill teams. The app reads simple JS data files and renders short summary cards (Weapons, Impacts You, Impacts Them) which can be exported as text or PDF.
+A small static web tool to create printable "tactical" cards for Warhammer Kill Team kill teams. The app reads simple JS data files and renders short summary cards (Weapons, Impacts You, Impacts Them) which can be exported as text or PDF. You can find the app - [here](https://kt-kye.pages.dev)
 
 **Quick Start**
 
 - Open `index.html` in a browser to view the app.
-
 
 **How the app works (big picture)**
 
@@ -30,13 +29,10 @@ Each kill team object supports the following fields (discoverable by reading `da
   - An array of strings (legacy/simple format). Example:
 
 ```javascript
-impactsYou: [
-  "Hard to engage this team",
-  "Slow but resilient"
-]
+impactsYou: ['Hard to engage this team', 'Slow but resilient'];
 ```
 
-  - Or an object mapping human-readable subsection titles to arrays of strings (new optional subcategory format). Example:
+- Or an object mapping human-readable subsection titles to arrays of strings (new optional subcategory format). Example:
 
 ```javascript
 weapons: {
