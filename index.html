@@ -1,9 +1,10 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Know Your Enemy - Yorkshire Kill Team</title>
+    <link rel="icon" type="image/png" href="icon.png" />
     <meta name="description" content="Generate tactical cards for Kill Teams" />
     <meta name="theme-color" content="#ffb341" />
     <link rel="manifest" href="manifest.json" />
@@ -18,11 +19,9 @@
   <body>
     <header class="hero">
       <div class="hero__content">
-        <img
-          src="logo.png"
-          alt="Kill Team logo"
-          class="hero__logo"
-        />
+        <a href="https://linktr.ee/ykillteam" target="_blank" rel="noopener noreferrer">
+          <img src="logo.png" alt="Kill Team logo" class="hero__logo" />
+        </a>
         <p class="eyebrow">Yorkshire Kill Team</p>
         <h1>Know Your Enemy</h1>
         <p>Pick a kill team to generate a concise tactical card.</p>
@@ -36,9 +35,7 @@
     </header>
 
     <main id="cardStage" class="card-stage">
-      <p class="empty-state">
-        Select a kill team above to preview its tactical card.
-      </p>
+      <p class="empty-state">Select a kill team above to preview its tactical card.</p>
     </main>
 
     <footer class="site-footer">
@@ -48,8 +45,9 @@
           <label class="select-label select-label--inline" for="exportSelect">
             <select id="exportSelect">
               <option value="" disabled selected>Choose format…</option>
-              <option value="text">Text</option>
-              <option value="pdf">PDF</option>
+              <option value="md">Download Markdown (.md)</option>
+              <option value="pdf">Export PDF (A4, rendered from Markdown)</option>
+              <option value="pdf-tarot">Export PDF (Tarot size, fitted)</option>
             </select>
           </label>
           <button id="clearButton" class="ghost-button ghost-button--subtle" type="button">
@@ -69,6 +67,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="data/killteams-manifest.js"></script>
     <script src="killteam-loader.js"></script>
     <script src="app.js"></script>
@@ -76,7 +75,8 @@
       // Register service worker for offline support
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/service-worker.js')
+          navigator.serviceWorker
+            .register('/service-worker.js')
             .then((registration) => {
               console.log('ServiceWorker registration successful:', registration.scope);
             })
@@ -88,4 +88,3 @@
     </script>
   </body>
 </html>
-
