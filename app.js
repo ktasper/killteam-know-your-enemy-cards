@@ -365,7 +365,10 @@ function exportAsMarkdownAndPDF(killteam, label) {
           const imgData = sliceCanvas.toDataURL('image/png');
 
           if (sliceIndex > 0) pdf.addPage();
-          pdf.addImage(imgData, 'PNG', 0, 0, PDF_WIDTH_IN, PDF_HEIGHT_IN);
+          // Compute the image size in inches so we don't stretch partial slices
+          const sliceWidthIn = sliceCanvas.width / (CSS_DPI * scale);
+          const sliceHeightIn = sliceCanvas.height / (CSS_DPI * scale);
+          pdf.addImage(imgData, 'PNG', 0, 0, sliceWidthIn, sliceHeightIn);
         }
 
         pdf.save(`${label}.pdf`);
@@ -571,7 +574,10 @@ async function exportAsTarotPDF(killteam, label) {
       const imgData = sliceCanvas.toDataURL('image/png');
 
       if (sliceIndex > 0) pdf.addPage();
-      pdf.addImage(imgData, 'PNG', 0, 0, TAROT_WIDTH_IN, TAROT_HEIGHT_IN);
+      // Preserve correct aspect by sizing image using pixels->inches conversion
+      const sliceWidthIn = sliceCanvas.width / (CSS_DPI * scale);
+      const sliceHeightIn = sliceCanvas.height / (CSS_DPI * scale);
+      pdf.addImage(imgData, 'PNG', 0, 0, sliceWidthIn, sliceHeightIn);
     }
 
     pdf.save(`${label}.tarot.pdf`);
