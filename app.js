@@ -58,6 +58,15 @@ function renderCard(killteamId) {
       <header class="card__header">
         <span class="card__tagline">${killteam.tagline ?? ''}</span>
         <h2>${killteam.name}</h2>
+        ${
+          killteam.archetypes
+            ? `<div class="card__archetypes">${
+                Array.isArray(killteam.archetypes)
+                  ? killteam.archetypes.map((a) => `<span class=\"chip\">${a}</span>`).join(' ')
+                  : `<span class=\"chip\">${killteam.archetypes}</span>`
+              }</div>`
+            : ''
+        }
         ${killteam.updated ? `<span class="card__updated">Updated: ${killteam.updated}</span>` : ''}
       </header>
       <section class="card__body">
@@ -71,6 +80,13 @@ function renderCard(killteamId) {
   if (footerControls) {
     footerControls.classList.add('footer-controls--visible');
   }
+}
+
+// Utility to format archetypes for Markdown
+function formatArchetypesForMarkdown(archetypes) {
+  if (!archetypes) return '';
+  if (Array.isArray(archetypes)) return `**Archetypes:** ${archetypes.join(', ')}\n\n`;
+  return `**Archetypes:** ${archetypes}\n\n`;
 }
 
 function renderSection(title, items = []) {
@@ -178,6 +194,8 @@ function buildMarkdown(killteam) {
   if (!killteam) return '';
   let md = `# ${killteam.name}\n\n`;
   if (killteam.tagline) md += `*${killteam.tagline}*\n\n`;
+  // Archetypes at top
+  if (killteam.archetypes) md += formatArchetypesForMarkdown(killteam.archetypes);
   if (killteam.updated) md += `**Updated:** ${killteam.updated}\n\n`;
 
   function appendSection(title, items) {
@@ -274,6 +292,15 @@ function exportAsMarkdownAndPDF(killteam, label) {
         <div class="wy-accent"></div>
         <h1>${killteam.name}</h1>
         ${killteam.tagline ? `<div class="wy-tagline">${killteam.tagline}</div>` : ''}
+        ${
+          killteam.archetypes
+            ? `<div class="wy-archetypes">${
+                Array.isArray(killteam.archetypes)
+                  ? killteam.archetypes.join(' · ')
+                  : killteam.archetypes
+              }</div>`
+            : ''
+        }
       </header>
       <article class="md-export" style="font-family: Inter, system-ui, sans-serif; font-size: 16px; line-height:1.8;">${mdHtml}</article>
     </div>
@@ -286,6 +313,7 @@ function exportAsMarkdownAndPDF(killteam, label) {
     .wy-accent{height:6px;background:linear-gradient(90deg,#d4af37,#b97a00);width:100%;margin-bottom:8px}
     .wy-header h1{font-family:Oswald,serif;color:#f6eadb;margin:0;padding:0;font-size:1.6rem;letter-spacing:1px;text-transform:uppercase}
     .wy-tagline{color:#e6d6b0;font-style:italic;margin-top:4px;font-size:0.9rem}
+    .wy-archetypes{color:#ffdca1;margin-top:6px;font-weight:600}
     .md-export{max-width:100%;color:#efe6cf}
     .md-export h1{font-family:Oswald,serif;font-size:1.3rem;margin:0 0 .6rem}
     .md-export h2{font-family:Oswald,serif;font-size:1.05rem;margin:0 0 .5rem}

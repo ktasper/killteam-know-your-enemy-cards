@@ -3,6 +3,8 @@ window.KILLTEAM_DATA = [
     id: 'nemclaw',
     name: 'Nemesis Claw',
     tagline: 'We have come for you',
+    archetypes: 'Seek & Destroy / I­nfi­ltra­tio­n',
+
     updated: '14-11-2025',
     weapons: {
       'Individual Operatives': [

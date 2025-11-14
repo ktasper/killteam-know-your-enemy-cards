@@ -39,7 +39,6 @@
 - Tempestus Aquilons
 - Void-Dancer Troupe
 - Warpcoven
-- Wolf Scouts
 - Wrecka Krew
 - Wyrmblade
 
@@ -48,3 +47,4 @@
 - Hernkyn Yaegirs
 - Nemesis Claw
 - Vespid Stingwings
+- Wolf Scouts

@@ -4,6 +4,7 @@ window.KILLTEAM_DATA = [
     name: 'Vespid Stingwings',
     tagline: 'Bzzzzz',
     updated: '14-11-2025',
+    archetypes: 'Seek & Destroy / Recon',
     weapons: {
       'Individual Operatives': [
         'Swarmguard has torrent 2"',
@@ -39,6 +40,7 @@ window.KILLTEAM_DATA = [
     id: 'yaegirs',
     name: 'Hernkyn Yaegirs',
     tagline: 'For rock and stone!',
+    archetypes: 'Seek & Destroy / I­nfi­ltra­tio­n',
     updated: '14-11-2025',
     weapons: {
       Equipment: ['Add Blast 1" to Range 6" Shotguns'],
