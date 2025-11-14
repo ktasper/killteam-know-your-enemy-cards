@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Yorkshire Know Your Enemy - Kill Team</title>
+    <meta name="description" content="Generate tactical cards for Kill Teams" />
+    <meta name="theme-color" content="#ffb341" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <div class="hero__content">
+        <img
+          src="logo.png"
+          alt="Kill Team logo"
+          class="hero__logo"
+        />
+        <p class="eyebrow">Yorkshire Kill Team Helper</p>
+        <h1>Know Your Enemy</h1>
+        <p>Pick a kill team to generate a concise tactical card.</p>
+      </div>
+      <div class="controls">
+        <label class="select-label" for="killteamSelect">
+          <span>Select kill team</span>
+          <select id="killteamSelect"></select>
+        </label>
+      </div>
+    </header>
+
+    <main id="cardStage" class="card-stage">
+      <p class="empty-state">
+        Select a kill team above to preview its tactical card.
+      </p>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-controls" id="footerControls">
+        <div class="control-buttons">
+          <span class="footer-controls__label">Export</span>
+          <label class="select-label select-label--inline" for="exportSelect">
+            <select id="exportSelect">
+              <option value="" disabled selected>Choose format…</option>
+              <option value="text">Text</option>
+              <option value="pdf">PDF</option>
+            </select>
+          </label>
+          <button id="clearButton" class="ghost-button ghost-button--subtle" type="button">
+            Clear
+          </button>
+        </div>
+      </div>
+      <a
+        href="https://linktr.ee/ykillteam"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="site-footer__link"
+      >
+        Yorkshire Kill Team Linktree
+      </a>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="data/killteams-manifest.js"></script>
+    <script src="killteam-loader.js"></script>
+    <script src="app.js"></script>
+    <script>
+      // Register service worker for offline support
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/service-worker.js')
+            .then((registration) => {
+              console.log('ServiceWorker registration successful:', registration.scope);
+            })
+            .catch((error) => {
+              console.log('ServiceWorker registration failed:', error);
+            });
+        });
+      }
+    </script>
+  </body>
+</html>
+

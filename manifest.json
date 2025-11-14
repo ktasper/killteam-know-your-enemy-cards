@@ -1,0 +1,19 @@
+{
+  "name": "Know Your Enemy - Kill Team",
+  "short_name": "Kill Team Helper",
+  "description": "Generate tactical cards for Kill Teams",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f1115",
+  "theme_color": "#ffb341",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
+

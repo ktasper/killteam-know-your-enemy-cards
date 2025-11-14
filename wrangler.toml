@@ -1,0 +1,8 @@
+name = "kye-test"
+compatibility_date = "2025-10-19"
+
+# This tells Wrangler where your static files are
+pages_build_output_dir = "./"
+
+[site]
+bucket = "./public"
