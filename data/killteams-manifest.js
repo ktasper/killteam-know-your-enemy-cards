@@ -5,5 +5,6 @@ window.KILLTEAM_FILES = [
   // Add more files here as needed:
   //'data/killteams/example.js',
   'data/killteams/xenos.js',
+  'data/killteams/chaos.js',
   // 'data/killteams/another-team.js',
 ];

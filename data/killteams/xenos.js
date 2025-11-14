@@ -20,7 +20,6 @@ window.KILLTEAM_DATA = [
         'Drone cannot be targeted if in cover and concealed. Expect from within 2", also ignores piercing.',
       ],
     },
-    // Example impacts as subcategories. Keys become subsection titles.
     impactsThem: {
       'Faction Rules / Equipment / Ploys': [
         'Rule: Lets them fly, IE teleport up to 6" as a move action.',
@@ -58,7 +57,6 @@ window.KILLTEAM_DATA = [
       ],
       'Individual Operatives': ['Theyn ignores 1st death and stays alive that with 1w.'],
     },
-    // Example impacts as subcategories. Keys become subsection titles.
     impactsThem: {
       'Faction Rules / Equipment / Ploys': [
         'Rule: Resourceful points for ops to gain 1AP or heal D3+1.',
