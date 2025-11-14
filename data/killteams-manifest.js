@@ -4,6 +4,7 @@ window.KILLTEAM_FILES = [
   'data/killteams/killteams.js', // Main kill teams file (can contain multiple kill teams)
   // Add more files here as needed:
   'data/killteams/example.js',
+  'data/killteams/xenos.js',
   // 'data/killteams/another-team.js',
 ];
 

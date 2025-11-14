@@ -56,11 +56,12 @@ function renderCard(killteamId) {
       <header class="card__header">
         <span class="card__tagline">${killteam.tagline ?? ""}</span>
         <h2>${killteam.name}</h2>
+        ${killteam.updated ? `<span class="card__updated">Updated: ${killteam.updated}</span>` : ""}
       </header>
       <section class="card__body">
-        ${renderSection("Weapons", killteam.weapons)}
-        ${renderSection("Impacts You", killteam.impactsYou)}
-        ${renderSection("Impacts Them", killteam.impactsThem)}
+          ${renderSection("Weapons", killteam.weapons)}
+            ${renderSection("Impacts You", killteam.impactsYou)}
+            ${renderSection("Impacts Them", killteam.impactsThem)}
       </section>
     </article>
   `;
@@ -71,17 +72,68 @@ function renderCard(killteamId) {
 }
 
 function renderSection(title, items = []) {
-  const safeItems = Array.isArray(items) ? items : [];
-  if (!safeItems.length) return "";
-  const listItems = safeItems.map((text) => `<li>${text}</li>`).join("");
-  return `
-    <div class="card-section">
-      <h3 class="card-section__title">${title}</h3>
-      <ul class="card-section__list">
-        ${listItems}
-      </ul>
-    </div>
-  `;
+  // Support either: array of strings (legacy) OR object of subcategory -> array of strings
+  if (!items) return "";
+
+  // If it's an array, render a single section
+  if (Array.isArray(items)) {
+    if (!items.length) return "";
+    const listItems = items.map((it) => {
+      // support either plain string or item object: { text: '...', important: true }
+      if (typeof it === 'string') {
+        return `<li>${it}</li>`;
+      }
+      if (it && typeof it === 'object') {
+        const safeText = it.text || '';
+        const cls = it.important ? 'marker-important' : '';
+        return `<li><span class="${cls}">${safeText}</span></li>`;
+      }
+      return '';
+    }).join("");
+    return `
+      <div class="card-section">
+        <h3 class="card-section__title">${title}</h3>
+        <ul class="card-section__list">
+          ${listItems}
+        </ul>
+      </div>
+    `;
+  }
+
+  // If it's an object, each key is a subcategory with its own array
+  if (typeof items === "object") {
+    const subSections = Object.keys(items).map((subTitle) => {
+      const subItems = Array.isArray(items[subTitle]) ? items[subTitle] : [];
+      if (!subItems.length) return "";
+      const list = subItems.map((it) => {
+        if (typeof it === 'string') return `<li>${it}</li>`;
+        if (it && typeof it === 'object') {
+          const safeText = it.text || '';
+          const cls = it.important ? 'marker-important' : '';
+          return `<li><span class="${cls}">${safeText}</span></li>`;
+        }
+        return '';
+      }).join("");
+      return `
+        <div class="card-subsection">
+          <h4 class="card-subsection__title">${subTitle}</h4>
+          <ul class="card-section__list">
+            ${list}
+          </ul>
+        </div>
+      `;
+    }).join("");
+
+    if (!subSections) return "";
+    return `
+      <div class="card-section">
+        <h3 class="card-section__title">${title}</h3>
+        ${subSections}
+      </div>
+    `;
+  }
+
+  return "";
 }
 
 function handleSelectChange(event) {
@@ -121,30 +173,48 @@ function exportAsText(killteam, label) {
   if (killteam.tagline) {
     text += `${killteam.tagline}\n`;
   }
+  if (killteam.updated) {
+    text += `Updated: ${killteam.updated}\n`;
+  }
   text += "\n";
-
-  if (killteam.weapons && killteam.weapons.length > 0) {
-    text += "WEAPONS:\n";
-    killteam.weapons.forEach((weapon) => {
-      text += `  • ${weapon}\n`;
-    });
-    text += "\n";
+  // Helper to format either array or object subcategories
+  function appendSection(title, items) {
+    if (!items) return;
+    if (Array.isArray(items) && items.length > 0) {
+      text += `${title}:\n`;
+      items.forEach((it) => {
+        if (typeof it === 'string') {
+          text += `  • ${it}\n`;
+        } else if (it && typeof it === 'object') {
+          const safeText = it.text || '';
+          text += `  • ${prefix}${safeText}\n`;
+        }
+      });
+      text += "\n";
+    } else if (typeof items === "object") {
+      const keys = Object.keys(items);
+      if (!keys.length) return;
+      text += `${title}:\n`;
+      keys.forEach((sub) => {
+        const subItems = Array.isArray(items[sub]) ? items[sub] : [];
+        if (!subItems.length) return;
+        text += `  ${sub}:\n`;
+        subItems.forEach((it) => {
+          if (typeof it === 'string') {
+            text += `    • ${it}\n`;
+          } else if (it && typeof it === 'object') {
+            const safeText = it.text || '';
+            text += `    • ${prefix}${safeText}\n`;
+          }
+        });
+      });
+      text += "\n";
+    }
   }
 
-  if (killteam.impactsYou && killteam.impactsYou.length > 0) {
-    text += "IMPACTS YOU:\n";
-    killteam.impactsYou.forEach((impact) => {
-      text += `  • ${impact}\n`;
-    });
-    text += "\n";
-  }
-
-  if (killteam.impactsThem && killteam.impactsThem.length > 0) {
-    text += "IMPACTS THEM:\n";
-    killteam.impactsThem.forEach((impact) => {
-      text += `  • ${impact}\n`;
-    });
-  }
+  appendSection("WEAPONS", killteam.weapons);
+  appendSection("IMPACTS YOU", killteam.impactsYou);
+  appendSection("IMPACTS THEM", killteam.impactsThem);
 
   const blob = new Blob([text], { type: "text/plain" });
   const link = document.createElement("a");
@@ -176,28 +246,56 @@ function exportAsPDF(cardEl, killteam, label) {
   pages.push(createPageElement("header", killteam));
   
   // Additional pages: One per section
-  if (killteam.weapons && killteam.weapons.length > 0) {
-    pages.push(createPageElement("section", {
-      title: "Weapons",
-      items: killteam.weapons,
-      killteamName: killteam.name
-    }));
+  // Weapons: support array or object (subsections). Group object subsections onto one page.
+  if (killteam.weapons) {
+    if (Array.isArray(killteam.weapons) && killteam.weapons.length > 0) {
+      pages.push(createPageElement("section", {
+        title: "Weapons",
+        items: killteam.weapons,
+        killteamName: killteam.name
+      }));
+    } else if (typeof killteam.weapons === "object") {
+      // Push a single page containing all subcategories
+      pages.push(createPageElement("section", {
+        title: "Weapons",
+        items: killteam.weapons,
+        killteamName: killteam.name
+      }));
+    }
   }
-  
-  if (killteam.impactsYou && killteam.impactsYou.length > 0) {
-    pages.push(createPageElement("section", {
-      title: "Impacts You",
-      items: killteam.impactsYou,
-      killteamName: killteam.name
-    }));
+
+  // Impacts You
+  if (killteam.impactsYou) {
+    if (Array.isArray(killteam.impactsYou) && killteam.impactsYou.length > 0) {
+      pages.push(createPageElement("section", {
+        title: "Impacts You",
+        items: killteam.impactsYou,
+        killteamName: killteam.name
+      }));
+    } else if (typeof killteam.impactsYou === "object") {
+      pages.push(createPageElement("section", {
+        title: "Impacts You",
+        items: killteam.impactsYou,
+        killteamName: killteam.name
+      }));
+    }
   }
-  
-  if (killteam.impactsThem && killteam.impactsThem.length > 0) {
-    pages.push(createPageElement("section", {
-      title: "Impacts Them",
-      items: killteam.impactsThem,
-      killteamName: killteam.name
-    }));
+
+  // Impacts Them
+  if (killteam.impactsThem) {
+    if (Array.isArray(killteam.impactsThem) && killteam.impactsThem.length > 0) {
+      pages.push(createPageElement("section", {
+        title: "Impacts Them",
+        items: killteam.impactsThem,
+        killteamName: killteam.name
+      }));
+    } else if (typeof killteam.impactsThem === "object") {
+      pages.push(createPageElement("section", {
+        title: "Impacts Them",
+        items: killteam.impactsThem,
+        killteamName: killteam.name
+      }));
+    }
   }
 
   // Create a container to hold all pages temporarily
@@ -273,21 +371,61 @@ function createPageElement(type, data) {
       <header class="card__header">
         ${data.tagline ? `<span class="card__tagline">${data.tagline}</span>` : ""}
         <h2>${data.name}</h2>
+        ${data.updated ? `<span class="card__updated">Updated: ${data.updated}</span>` : ""}
       </header>
     `;
   } else if (type === "section") {
-    const listItems = data.items.map((item) => `<li>${item}</li>`).join("");
-    pageEl.innerHTML = `
-      <header class="card__header">
-        <h2 style="font-size: 1.2rem; margin-bottom: 0.5rem;">${data.killteamName}</h2>
-      </header>
-      <section class="card__body">
+    // items may be an array (legacy) or an object of subsections
+    let bodyHtml = "";
+
+    if (Array.isArray(data.items)) {
+      const listItems = data.items.map((it) => {
+        if (typeof it === 'string') return `<li>${it}</li>`;
+        if (it && typeof it === 'object') {
+          const safeText = it.text || '';
+          const cls = it.important ? 'marker-important' : '';
+          return `<li><span class="${cls}">${safeText}</span></li>`;
+        }
+        return '';
+      }).join("");
+      bodyHtml = `
         <div class="card-section">
           <h3 class="card-section__title">${data.title}</h3>
           <ul class="card-section__list">
             ${listItems}
           </ul>
         </div>
+      `;
+    } else if (typeof data.items === "object") {
+      // Render a single section with multiple subsections
+      const subsections = Object.keys(data.items).map((subTitle) => {
+        const subItems = Array.isArray(data.items[subTitle]) ? data.items[subTitle] : [];
+        if (!subItems.length) return "";
+        const list = subItems.map((it) => `<li>${it}</li>`).join("");
+        return `
+          <div class="card-subsection">
+            <h4 class="card-subsection__title">${subTitle}</h4>
+            <ul class="card-section__list">
+              ${list}
+            </ul>
+          </div>
+        `;
+      }).join("");
+
+      bodyHtml = `
+        <div class="card-section">
+          <h3 class="card-section__title">${data.title}</h3>
+          ${subsections}
+        </div>
+      `;
+    }
+
+    pageEl.innerHTML = `
+      <header class="card__header">
+        <h2 style="font-size: 1.2rem; margin-bottom: 0.5rem;">${data.killteamName}</h2>
+      </header>
+      <section class="card__body">
+        ${bodyHtml}
       </section>
     `;
   }

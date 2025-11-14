@@ -20,7 +20,8 @@
 body {
   margin: 0;
   min-height: 100vh;
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
   color: var(--text);
   background: radial-gradient(circle at 20% 20%, #1c2130, #0b0d12);
   padding: 1.5rem;
@@ -91,7 +92,7 @@ body {
 h1,
 h2,
 h3 {
-  font-family: "Oswald", "Arial Narrow", "Franklin Gothic Medium", "Arial Black", sans-serif;
+  font-family: 'Oswald', 'Arial Narrow', 'Franklin Gothic Medium', 'Arial Black', sans-serif;
   font-weight: 500;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -105,7 +106,7 @@ p {
 }
 
 code {
-  font-family: "JetBrains Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+  font-family: 'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace;
   background: rgba(255, 255, 255, 0.08);
   padding: 0.1em 0.4em;
   border-radius: 6px;
@@ -212,7 +213,8 @@ select option {
   padding: 0.85rem 1rem;
   cursor: pointer;
   box-shadow: var(--shadow);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, background 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease,
+    background 0.2s ease;
   font-size: 1rem;
 }
 
@@ -322,6 +324,13 @@ select option {
   color: var(--primary);
 }
 
+.card__updated {
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-top: 0.15rem;
+  display: inline-block;
+}
+
 .card__body {
   display: grid;
   gap: 0.75rem;
@@ -352,6 +361,45 @@ select option {
 
 .card-section__list li + li {
   margin-top: 0.25rem;
+}
+
+.card-subsection {
+  margin-top: 0.6rem;
+  padding-left: 0.6rem;
+  border-left: 3px solid rgba(255, 179, 65, 0.08);
+}
+
+.card-subsection__title {
+  font-size: 0.95rem;
+  margin: 0 0 0.35rem;
+  color: var(--primary);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  background: rgba(255, 179, 65, 0.06);
+  padding: 0.12rem 0.5rem;
+  border-radius: 8px;
+  display: inline-block;
+}
+
+/* visual marker for important items shown on the card */
+.marker-important {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: var(--accent);
+  color: #fff;
+  padding: 0.08rem 0.45rem;
+  border-radius: 8px;
+  font-weight: 800;
+  box-shadow: 0 4px 10px rgba(255, 95, 95, 0.08);
+}
+
+.marker-important::before {
+  content: '⚠';
+  display: inline-block;
+  font-size: 0.95em;
+  line-height: 1;
 }
 
 .empty-state {
@@ -471,4 +519,3 @@ select option {
   size: 210mm 297mm;
   margin: 10mm;
 }
-
