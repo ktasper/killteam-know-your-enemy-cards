@@ -17,7 +17,7 @@ window.KILLTEAM_DATA = [
         'Strategy Ploy: if you are in the storm you lose an atk dice when fighting (min 3).',
         'Strategy Ploy: They can deal D3+1 dmg after a fight/retaliation.',
         'Firefight Ploy: If you fight them, they can fight you back on your turn.',
-        'Equipment: Once per fight they can reduce dmg by 1 on a single hit.',
+
         { text: 'Firefight Ploy: Seek light and anti obscured within 6"', important: true },
       ],
       'Individual Operatives': [
@@ -34,6 +34,7 @@ window.KILLTEAM_DATA = [
         'Equipment: Lethal 5+ for all except Priest Skjald  and Lethal 4+ for Leader on melee attacks.',
         'Equipment: Turn 2 fails to a success when shooting,fighting or retaliating.',
         { text: 'Equipment: Once per TP reduce piercing by 1.', important: true },
+        'Equipment: Once per fight they can reduce dmg by 1 on a single hit.',
       ],
       'Individual Operatives': [
         'Priest Skjald can move the storm / give it to someone to make them obscured within 3".',
