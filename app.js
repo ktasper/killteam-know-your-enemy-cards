@@ -2,7 +2,7 @@ const selectEl = document.getElementById('killteamSelect');
 const stageEl = document.getElementById('cardStage');
 const exportSelect = document.getElementById('exportSelect');
 const clearBtn = document.getElementById('clearButton');
-const clearCacheBtn = document.getElementById('clearCacheButton');
+const cacheInfoBtn = document.getElementById('cacheInfoButton');
 const footerControls = document.getElementById('footerControls');
 
 const TAROT_WIDTH_IN = 2.75;
@@ -672,74 +672,20 @@ function handleClear() {
   renderCard(null);
 }
 
-function handleClearCache() {
-  // Ask the user before removing caches
-  const ok = confirm(
-    'Clear cached resources (service worker, Cache Storage, localStorage, indexedDB) and reload?'
-  );
-  if (!ok) return;
-  clearCachesAndReload();
-}
+function handleCacheInfoClick() {
+  // Inform the user with platform-specific guidance (no automatic clearing performed)
+  const instructions =
+    "If you're not seeing recent changes, your browser may be showing cached files or a service worker is serving an older version.\n\n" +
+    'Quick options to try (pick one appropriate for your device):\n\n' +
+    '• Open the site in a Private / Incognito tab (fast test).\n' +
+    '• Reload and force refresh (hold reload button or use browser action to reload without cache).\n\n' +
+    'Browser-specific hints:\n' +
+    "- Chrome / Brave (Android): Menu → History → Clear browsing data → select 'Cached images and files' (or Site settings → Clear & reset).\n" +
+    '- Safari (iOS): Settings app → Safari → Clear History and Website Data, or open the page in a Private tab.\n' +
+    '- Desktop browsers: open DevTools → Application (or Storage) → Clear site data / Unregister service worker.\n\n' +
+    'If you still want the app to clear cached data for you, use your browser settings to clear site data.';
 
-async function clearCachesAndReload() {
-  try {
-    // Unregister service workers
-    if ('serviceWorker' in navigator) {
-      try {
-        const regs = await navigator.serviceWorker.getRegistrations();
-        await Promise.all(regs.map((r) => r.unregister().catch(() => {})));
-      } catch (e) {
-        console.warn('Error unregistering service workers', e);
-      }
-    }
-
-    // Clear Cache Storage
-    if ('caches' in window) {
-      try {
-        const keys = await caches.keys();
-        await Promise.all(keys.map((k) => caches.delete(k).catch(() => {})));
-      } catch (e) {
-        console.warn('Error clearing caches', e);
-      }
-    }
-
-    // Clear localStorage
-    try {
-      localStorage.clear();
-    } catch (e) {
-      console.warn('Error clearing localStorage', e);
-    }
-
-    // Delete indexedDB databases if available (best-effort)
-    try {
-      if (indexedDB && indexedDB.databases) {
-        const dbs = await indexedDB.databases();
-        await Promise.all(
-          dbs.map((db) =>
-            db.name
-              ? new Promise((res) => {
-                  indexedDB.deleteDatabase(db.name);
-                  setTimeout(res, 200);
-                })
-              : Promise.resolve()
-          )
-        );
-      }
-    } catch (e) {
-      // Some browsers don't support indexedDB.databases()
-      console.warn('Error clearing indexedDB', e);
-    }
-  } catch (err) {
-    console.error('Error clearing caches', err);
-  }
-
-  // Reload with cache-bypass
-  try {
-    const url = window.location.pathname + '?_=' + Date.now();
-    window.location.href = url;
-  } catch (e) {
-    window.location.reload();
-  }
+  alert(instructions);
 }
 
 function init() {
@@ -747,7 +693,7 @@ function init() {
   selectEl?.addEventListener('change', handleSelectChange);
   exportSelect?.addEventListener('change', handleExportChange);
   clearBtn?.addEventListener('click', handleClear);
-  clearCacheBtn?.addEventListener('click', handleClearCache);
+  cacheInfoBtn?.addEventListener('click', handleCacheInfoClick);
 }
 
 document.addEventListener('DOMContentLoaded', init);
