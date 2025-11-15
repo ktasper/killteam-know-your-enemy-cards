@@ -747,6 +747,7 @@ function init() {
   selectEl?.addEventListener('change', handleSelectChange);
   exportSelect?.addEventListener('change', handleExportChange);
   clearBtn?.addEventListener('click', handleClear);
+  clearCacheBtn?.addEventListener('click', handleClearCache);
 }
 
 document.addEventListener('DOMContentLoaded', init);
