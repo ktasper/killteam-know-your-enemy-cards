@@ -15,7 +15,6 @@
 - Farstalker Kinband
 - Felgor Ravagers
 - Gellerpox Infected
-- Goremongers
 - Hand of the Archon
 - Hearthkyn Salvagers
 - Hierotek Circle
@@ -27,7 +26,6 @@
 - Mandrakes
 - Navy Breachers
 - Novitiates
-- Overall
 - Pathfinders
 - Phobos Strike Team
 - Plague Marines
@@ -41,10 +39,3 @@
 - Warpcoven
 - Wrecka Krew
 - Wyrmblade
-
-# Done
-
-- Hernkyn Yaegirs
-- Nemesis Claw
-- Vespid Stingwings
-- Wolf Scouts
