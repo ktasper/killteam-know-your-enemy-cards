@@ -2,6 +2,7 @@ const selectEl = document.getElementById('killteamSelect');
 const stageEl = document.getElementById('cardStage');
 const exportSelect = document.getElementById('exportSelect');
 const clearBtn = document.getElementById('clearButton');
+const clearCacheBtn = document.getElementById('clearCacheButton');
 const footerControls = document.getElementById('footerControls');
 
 const TAROT_WIDTH_IN = 2.75;
@@ -669,6 +670,76 @@ function createPageElement(type, data) {
 function handleClear() {
   selectEl.value = '';
   renderCard(null);
+}
+
+function handleClearCache() {
+  // Ask the user before removing caches
+  const ok = confirm(
+    'Clear cached resources (service worker, Cache Storage, localStorage, indexedDB) and reload?'
+  );
+  if (!ok) return;
+  clearCachesAndReload();
+}
+
+async function clearCachesAndReload() {
+  try {
+    // Unregister service workers
+    if ('serviceWorker' in navigator) {
+      try {
+        const regs = await navigator.serviceWorker.getRegistrations();
+        await Promise.all(regs.map((r) => r.unregister().catch(() => {})));
+      } catch (e) {
+        console.warn('Error unregistering service workers', e);
+      }
+    }
+
+    // Clear Cache Storage
+    if ('caches' in window) {
+      try {
+        const keys = await caches.keys();
+        await Promise.all(keys.map((k) => caches.delete(k).catch(() => {})));
+      } catch (e) {
+        console.warn('Error clearing caches', e);
+      }
+    }
+
+    // Clear localStorage
+    try {
+      localStorage.clear();
+    } catch (e) {
+      console.warn('Error clearing localStorage', e);
+    }
+
+    // Delete indexedDB databases if available (best-effort)
+    try {
+      if (indexedDB && indexedDB.databases) {
+        const dbs = await indexedDB.databases();
+        await Promise.all(
+          dbs.map((db) =>
+            db.name
+              ? new Promise((res) => {
+                  indexedDB.deleteDatabase(db.name);
+                  setTimeout(res, 200);
+                })
+              : Promise.resolve()
+          )
+        );
+      }
+    } catch (e) {
+      // Some browsers don't support indexedDB.databases()
+      console.warn('Error clearing indexedDB', e);
+    }
+  } catch (err) {
+    console.error('Error clearing caches', err);
+  }
+
+  // Reload with cache-bypass
+  try {
+    const url = window.location.pathname + '?_=' + Date.now();
+    window.location.href = url;
+  } catch (e) {
+    window.location.reload();
+  }
 }
 
 function init() {
