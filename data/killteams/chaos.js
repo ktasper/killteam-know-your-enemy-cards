@@ -111,4 +111,65 @@ window.KILLTEAM_DATA = [
       ],
     },
   },
+  {
+    id: 'testgoremongers',
+    name: 'Test Goremongers',
+    tagline: 'Bloodplay is fun',
+    archetypes: 'Seek & Destroy / Recon',
+
+    updated: '14-11-2025',
+    weapons: {
+      'Individual Operatives': [
+        'All ops have 8" range',
+        {
+          text: 'Equipment: gives them the ability to shoot you with the melee weapon within 2"',
+          important: true,
+        },
+        'Inciter has Range 8", Ceaseless, Dev 1, Rending',
+      ],
+    },
+    impactsYou: {
+      'Faction Rules / Equipment / Ploys': [
+        {
+          text: 'Strategy Ploy: Reduce the first melee hit by half (min 2).',
+          important: true,
+        },
+        {
+          text: 'Rule: Spend blood to gain an 1" movement, giving them all a 10" charge.',
+          important: true,
+        },
+        {
+          text: 'Strategy Ploy: 3" charge in strat phase.',
+          important: true,
+        },
+        'Firefight Ploy: On counteract can change order and can do 1 of the following; fight/shoot/charge.',
+        'Equipment: Reduce piercing by 1 on an attack once per TP.',
+      ],
+      'Individual Operatives': [
+        'Inciter can daka dash (dash/shoot then the other).',
+        'Aspirant can charge after fighting (if it kills) Limited to 2".',
+        'Blood Herald has just a scratch on normal damage (Once per game).',
+      ],
+    },
+    impactsThem: {
+      'Faction Rules / Equipment / Ploys': [
+        {
+          text: 'Rule: Can only take 8 DMG via shooting.',
+          important: true,
+        },
+        {
+          text: 'Rule: Spend blood to D3+1 heal, even in CR.',
+          important: true,
+        },
+        'Rule: Spend blood to: Gain 1APL / 2 Fight / D3 Dmg on charge / 1+ ATK on fighting',
+      ],
+      'Individual Operatives': [
+        'Blood Herald once per round can fill the tank to half if empty.',
+        'Bloodtaker can increase other ops blood tanks visible and 8".',
+        'Impaler can drag you towards them on a crit via shoot.',
+        'Skullclaimer reduces crits down to normal dmg.',
+        'Stalker can climb for 2" and gains relentless if on vantage or dropped down.',
+      ],
+    },
+  },
 ];
