@@ -682,7 +682,7 @@ function handleCacheInfoClick() {
     'Browser-specific hints:\n' +
     "- Chrome / Brave (Android): Menu → History → Clear browsing data → select 'Cached images and files' (or Site settings → Clear & reset).\n" +
     '- Safari (iOS): Settings app → Safari → Clear History and Website Data, or open the page in a Private tab.\n' +
-    '- Desktop browsers: open DevTools → Application (or Storage) → Clear site data / Unregister service worker.\n\n' +
+    '- Desktop browsers: open DevTools → Application (or Storage) → Clear site data\n\n' +
     'If you still want the app to clear cached data for you, use your browser settings to clear site data.';
 
   alert(instructions);
